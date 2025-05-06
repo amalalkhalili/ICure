@@ -1,0 +1,81 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+
+        .result-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 3px dashed #6f8ffd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #153ed8;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin: 20px 0 10px;
+            font-size: 22px;
+            color: #153ed8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #6f8ffd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            color: #153ed8;
+        }
+
+        th {
+            background-color: #e6efff;
+            font-weight: bold;
+            font-family: "Times New Roman";
+            font-size: large;
+        }
+  
+        tr:nth-child(even) {
+            background-color: #f9faff;
+        }
+    </style>
+    <body>
+    <table class="result-container">
+        <thead>
+        <tr>
+            <th>Doctor Name</th>
+            <th>Ciy</th>
+            <th>Address</th>
+        </tr>
+        </thead>
+        <tbody>
+                    {% for doctor in doctors %}
+                <tr>
+                    <td>{{ doctor.Doctor_Name }}</td>
+                    <td>{{ doctor.city_name }}</td>
+                    <td>{{ doctor.Doctor_Address }}</td>
+                
+                </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </body>
+
+{% endblock %}

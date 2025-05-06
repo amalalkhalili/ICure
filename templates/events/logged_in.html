@@ -1,0 +1,96 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logged-In Home</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #e2edfa;
+        }
+
+        .button-container {
+            display: inline-block;
+            position: relative;
+            margin: 20px;
+        }
+
+        .button-container img {
+            height: 350px;
+            width: 350px;
+            border-radius: 0px;
+        }
+
+        .button-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .button-container:hover .button-text {
+            text-decoration: underline;
+        }
+
+        .animated-button {
+            animation: slideIn 2s ease-out forwards;
+            opacity: 60%;
+            cursor: pointer;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+        <div class="button-container" >
+            <a href="{% url 'diagnose' %}" class="animated-button">
+                <div class="button-container">
+            <img src="/suplements.jpg" alt="Button 1">
+            <div class="button-text">Diagnose</div>
+        </div>
+    </a>
+   <a href="{% url 'hospitals' %}" class="animated-button">
+        <div class="button-container">
+            <img src="/hospital.jpg" alt="Button 2">
+            <div class="button-text">Find a Hospital</div>
+        </div>
+    </a>
+            <a href="{% url 'find_doctor' %}" class="animated-button">
+                <div class="button-container">
+                    <img src="/finddoctor.jpg" alt="Button 3">
+                    <div class="button-text">Find a Doctor</div>
+                </div>
+            </a>
+    </div>
+</body>
+</html>
+
+{% endblock %}

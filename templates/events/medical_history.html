@@ -1,0 +1,162 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f0f8ff;
+    }
+    .login-form {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 3px dashed #6f8ffd;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    h2 {
+        text-align: center;
+        color: #153ed8;
+    }
+    input[type="text"],
+    input[type="password"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 2px solid #4879ff;
+        border-radius: 5px;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #144bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #b269ff;
+    }
+    .error {
+        color: red;
+    }
+</style>
+
+<body>
+<div class="login-form">
+    <h4 style="color: #153ed8">Please fill in the information</h4>
+    <form method="post" action="{% url 'medical_history' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Question 1 -->
+        <div>
+            <label for="is_chronic_disease" style="font-weight: bold; color: #153ed8;">
+                Do you have any chronic disease?
+            </label>
+            <br/>
+            <input type="radio" id="is_chronic_disease_yes" name="is_chronic_disease" value="1" onclick="toggleField('disease_type', true)" {% if form.is_chronic_disease.value == '1' %}checked{% endif %}>
+            <label for="is_chronic_disease_yes">Yes</label>
+            <br/>
+            <input type="radio" id="is_chronic_disease_no" name="is_chronic_disease" value="0" onclick="toggleField('disease_type', false)" {% if form.is_chronic_disease.value == '0' %}checked{% endif %}>
+            <label for="is_chronic_disease_no">No</label>
+        </div>
+        <br/>
+        <div>
+            <label for="disease_type" style="font-weight: bold; color: #153ed8;">
+                If yes, what kind of disease do you have?
+            </label>
+            <br/>
+            <select id="disease_type" name="disease_type" style="width: 100%; padding: 10px; border: 2px solid #4879ff; border-radius: 5px;" disabled>
+                <option value="" disabled selected>-- Select an option --</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="blood_pressure">Blood pressure disease</option>
+                <option value="cancer">Cancer</option>
+                <option value="other">Other</option>
+                <option value="none">None</option>
+            </select>
+        </div>
+        <br/>
+
+        <!-- Question 2 -->
+        <div>
+            <label for="is_on_medication" style="font-weight: bold; color: #153ed8;">
+                Do you take any type of medications?
+            </label>
+            <br/>
+            <input type="radio" id="is_on_medication_yes" name="is_on_medication" value="1" onclick="toggleField('medication_name', true)" {% if form.is_on_medication.value == '1' %}checked{% endif %}>
+            <label for="is_on_medication_yes">Yes</label>
+            <br/>
+            <input type="radio" id="is_on_medication_no" name="is_on_medication" value="0" onclick="toggleField('medication_name', false)"{% if form.is_on_medication.value == '0' %}checked{% endif %}>
+            <label for="is_on_medication_no">No</label>
+        </div>
+        <br/>
+        <div>
+            <label for="medication_name" style="font-weight: bold; color: #153ed8;">
+                What type of medication?
+            </label>
+            <br/>
+            <textarea id="medication_name" name="medication_name" rows="1" cols="40" placeholder="Write here..." style="border: 2px solid #4879ff; border-radius: 5px;" disabled></textarea>
+        </div>
+        <br/>
+
+        <!-- Question 3 -->
+        <div>
+            <label for="is_allergic" style="font-weight: bold; color: #153ed8;">
+                Do you have any allergies?
+            </label>
+            <br/>
+            <input type="radio" id="is_allergic_yes" name="is_allergic" value="1" onclick="toggleField('allergy', true)" {% if form.is_allergic.value == '1' %}checked{% endif %}>
+            <label for="is_allergic_yes">Yes</label>
+            <br/>
+            <input type="radio" id="is_allergic_no" name="is_allergic" value="0" onclick="toggleField('allergy', false)" {% if form.is_allergic.value == '0' %}checked{% endif %}>
+            <label for="is_allergic_no">No</label>
+        </div>
+        <br/>
+        <div>
+            <label for="allergy" style="font-weight: bold; color: #153ed8;">
+                What allergies?
+            </label>
+            <br/>
+            <textarea id="allergy" name="allergy" rows="1" cols="40" placeholder="Write here" style="border: 2px solid #4879ff; border-radius: 5px;" disabled></textarea>
+        </div>
+        <br/>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if form.errors %}
+        <div class="error">
+            <p>Please correct the following errors:</p>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    /**
+     * Toggle the disabled and required attributes of a field based on user selection.
+     * @param {string} fieldId - The ID of the field to toggle.
+     * @param {boolean} isEnabled - Whether the field should be enabled or not.
+     */
+    function toggleField(fieldId, isEnabled) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.disabled = !isEnabled;
+            field.required = isEnabled;
+            if (!isEnabled) {
+                field.value = ''; // Clear value when disabling
+            }
+        }
+    }
+</script>
+
+{% endblock %}

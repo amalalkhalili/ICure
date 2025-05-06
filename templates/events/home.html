@@ -1,0 +1,175 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Intro Section */
+        .intro-container {
+            width: 100%;
+            height: 90vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            animation: slideIn 1s ease-out forwards;
+        }
+
+        .intro-text {
+            position: absolute;
+            font-family: Georgia;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #0e2c8a;
+            font-size: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+            font-weight: bold;
+        
+        }
+
+        /* Babyblue Section */
+        .babyblue-section {
+            display: flex;
+            width: 100%;
+            height: 90vh;
+            position: relative;
+        }
+
+        .babyblue-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Push image to the background */
+        }
+
+        /* Left Section for Text */
+        .left-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+            margin-left: 10px; /* Ensure text is above the image */
+        }
+
+        .left-text {
+            font-family: Georgia;
+            font-size: 1.5rem;
+            color: #082275;
+            font-weight: bold;
+        }
+
+        /* Right Section for Button */
+        .moving-button-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .moving-button {
+            font-family: Georgia;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .moving-button:hover {
+            background-color: #0056b3;
+            opacity: 1;
+        }
+.moving-button-container {
+    flex-direction: column; /* Align buttons vertically */
+    gap: 10px; /* Add space between the buttons */
+}
+
+.text-button {
+    margin-top: 5px; /* Fine-tune spacing below the first button */
+    font-family: Georgia;
+    font-size: 18px;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.text-button:hover {
+    color: #0056b3; /* Darker blue on hover */
+    text-decoration: underline;
+}
+
+        /* Animations */
+        @keyframes slideIn {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+    <div class="intro-container">
+        <img class="intro-image" src="/doctor.png" alt="Intro Image">
+        <div class="intro-text">
+            <h1>Welcome To ICure!</h1>
+            <p>Your Health Is All What Matters </p>
+        </div>
+    </div>
+
+    <div class="babyblue-section">
+        <img src="/babyblue.jpg" class="babyblue-image" alt="Babyblue Image">
+
+        <div class="left-section">
+            <h1 class="left-text" style="font-size: x-large; align-content: start;">At ICURE , Your Health Is All What Matters<br/>
+                with personalized healthcare solutions,<br/>
+                expert medical professionals, <br/>
+                and state-of-the-art facilities.<br/>
+                Let us help you lead a healthier,<br/>
+                happier life<br/>
+                —because your health is our mission.</h1>
+        </div>
+
+        <div class="moving-button-container">
+            <a href="{% url 'register' %}" class="moving-button"><button class="moving-button">Create Your Account And start <br/>
+                A significant experience</button><br/></a>
+                <a href="{% url 'login' %}" class="text-button">Log in into existing account</a>
+        </div>
+    </div>
+{% endblock %}

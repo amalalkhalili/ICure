@@ -1,0 +1,111 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+    
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <title>Search Symptoms</title>
+       <style>
+        body {
+            background-color: #f0f8ff;
+        }
+        .login-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 3px dashed #6f8ffd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        h3{
+            text-align: center;
+            color: #153ed8;
+            font-family:Georgia;
+            font-size: xx-large;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #4879ff;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #144bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4879ff;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/css/autoComplete.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/autoComplete.min.js"></script>
+
+    </head>
+    
+    <body>
+    <div class="login-form">
+     <h3  style="font-weight: bold; color: #153ed8; text-align: center; ">Enter Your Symptoms</h3>
+     <form method="POST" action="{% url 'result' %}" >
+        {% csrf_token %}
+         <label for="symptom-search"></label>
+         <input type="text" id="symptom-search" placeholder="Search symptoms at most 6" autocomplete="off">
+         <ul id="suggestions"></ul>
+         <button type="submit" name="submit_symptoms">Submit</button>
+    </form>
+    </div>
+    
+    <script language="JavaScript" type="text/javascript">
+        $( document ).ready(function() {
+            $('#symptom-search').on('input', function() {
+                let query = $(this).val();
+                if (query.length > 0) {
+                    console.log(query);
+                    $.ajax({
+                        url: "{% url 'search_symptoms' %}",   
+                        data: { search: query },
+                        success: function(data) {
+                            //alert(data);
+                            //console.log(data);
+                            $('#suggestions').empty();
+                            //$('#suggestions').append('<li class="suggestion-item">' + data+ '</li>');
+                            
+                            data.forEach(function(symptom) {
+                                $('#suggestions').append('<li class="suggestion-item">' +  symptom.Symptoms + '</li>');
+                            });
+                            // Add click handler to suggestions
+                            $('.suggestion-item').on('click', function() {
+                                let selectedSymptom = $(this).text();
+                                // Add a hidden checkbox for the selected symptom
+                                $('form').append(`
+                                    <div>
+                                        <input type="checkbox" name="selected_symptoms" value="${selectedSymptom}" checked>
+                                        <label>${selectedSymptom}</label>
+                                    </div>
+                                `);
+                                $('#symptom-search').val('');
+                                $('#suggestions').empty();
+                            });
+                        }
+                    });
+                } else {
+                    $('#suggestions').empty();
+                }
+            });
+        });
+    </script>
+    </body>
+    </html>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #f0f8ff;
+        }
+        .login-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 3px dashed #6f8ffd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #153ed8;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #4879ff;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #144bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4879ff;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+
+<body>
+
+<div class="login-form">
+    <h2>Login</h2>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div>
+            <label for="id_username" style="font-weight: bold; color: #153ed8;">Username:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div>
+            <label for="id_password" style="font-weight: bold; color: #153ed8;">Password:</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="error">
+                    {% for error in form.password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit">Login</button>
+    </form>
+
+    {% if form.non_field_errors %}
+        <div class="error">
+            <p>Please correct the following errors:</p>
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+

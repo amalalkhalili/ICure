@@ -1,0 +1,115 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+       <style>
+        body {
+            background-color: #f0f8ff;
+        }
+        .login-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 3px dashed #6f8ffd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        h3 {
+            margin: 0;
+            text-align: center;
+            color: #153ed8;
+            font-family: "Times New Roman";
+            font-size: xx-large;
+        }
+        input[type="text"]
+        {
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #4879ff;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #144bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4879ff;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <body>
+        <div class="login-form">
+     <h3  style="font-weight: bold; color: #153ed8; text-align: center;">Find Your Doctor</h3>
+            <form method="POST" action="{% url 'doctor_result' %}">
+        {% csrf_token %}
+                <input type="hidden" name="search_specs">
+                <label for="doctors_search"></label>
+                <input type="text" id="doctors_search" name="doctors_search" value="" placeholder="Search for specialty" autocomplete="off">
+                <ul id="suggestions"></ul>
+                <button type="submit" name="submit_specs">Search</button>
+                <br><br>
+                <button type="reset" name="reset_specs">Clear Search</button>
+            </form>
+        </div>
+    </body>
+
+        <script language="JavaScript" type="text/javascript">
+        $( document ).ready(function() {
+            $('#doctors_search').on('input', function() {
+                let query = $(this).val();
+                if (query.length > 0) {
+                    console.log(query);
+                    $.ajax({
+                        url: "{% url 'find_specs' %}",
+                        data: { search: query },
+                        success: function(data) {
+                            //alert(data);
+                            //console.log(data);
+                            $('#suggestions').empty();
+                            //$('#suggestions').append('<li class="suggestion-item">' + data+ '</li>');
+
+                            data.forEach(function(dataitem) {
+                                console.log(dataitem);
+                                $('#suggestions').append('<li class="suggestion-item">' +  dataitem.Specialization + '</li>');
+                            });
+                            // Add click handler to suggestions
+                            $('.suggestion-item').on('click', function() {
+                                let selectedSpecialty = $(this).text();
+                                // Add a hidden checkbox for the selected symptom
+                                //alert(selectedSpecialty);
+                                $('#doctors_search').val ( selectedSpecialty );
+                                $('#search_specs').val ( selectedSpecialty );
+                                //alert($('#doctors_searchdoctors_search').valueOf());
+                                /*
+                                $('form').append(`
+                                    <div>
+                                        <input type="checkbox" name="selected_specialty" value="${selectedSpecialty}" checked>
+                                        <label>${selectedSpecialty}</label>
+                                    </div>
+                                `);
+                                */
+
+                                //$('#symptom-search').val('');
+                                $('#suggestions').empty();
+                            });
+                        }
+                    });
+                } else {
+                    $('#suggestions').empty();
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
